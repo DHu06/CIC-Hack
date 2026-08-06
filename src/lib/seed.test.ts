@@ -5,12 +5,11 @@ import { join } from "path";
 
 describe("seed idempotence (Property 12)", () => {
   const seedSql = readFileSync(
-    join(__dirname, "../../supabase/seed.sql"),
+    join(__dirname, "../../backend/sql/seed.sql"),
     "utf-8"
   );
 
   it("all INSERT statements use ON CONFLICT DO NOTHING", () => {
-    // Split by semicolons to get individual statements, then find INSERTs
     const statements = seedSql.split(";");
     const insertStatements = statements.filter(s => s.toUpperCase().includes("INSERT INTO"));
     expect(insertStatements.length).toBeGreaterThan(0);
@@ -28,7 +27,7 @@ describe("seed idempotence (Property 12)", () => {
   it("seed SQL is deterministic (property: same content on every read)", () => {
     fc.assert(
       fc.property(fc.constant(null), () => {
-        const sql2 = readFileSync(join(__dirname, "../../supabase/seed.sql"), "utf-8");
+        const sql2 = readFileSync(join(__dirname, "../../backend/sql/seed.sql"), "utf-8");
         expect(sql2).toBe(seedSql);
       }),
       { numRuns: 5 }
@@ -36,7 +35,6 @@ describe("seed idempotence (Property 12)", () => {
   });
 
   it("contains expected reference data counts", () => {
-    // 8 subjects, 24 courses, 10 rooms
     const subjectInserts = seedSql.match(/INSERT INTO subjects/g) ?? [];
     expect(subjectInserts.length).toBeGreaterThanOrEqual(1);
     const courseInserts = seedSql.match(/INSERT INTO courses/g) ?? [];
