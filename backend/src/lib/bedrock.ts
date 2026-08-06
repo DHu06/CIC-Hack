@@ -1,7 +1,7 @@
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 
 const client = new BedrockRuntimeClient({
-  region: process.env.AWS_BEDROCK_REGION || "us-west-2",
+  region: process.env.AWS_BEDROCK_REGION || "us-east-1",
 });
 
 export interface BedrockMessage {
