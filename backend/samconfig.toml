@@ -1,0 +1,15 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "studyhall-backend"
+resolve_s3 = true
+s3_prefix = "studyhall-backend"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "DBHost=\"study.ce9eowmuw7hd.us-east-1.rds.amazonaws.com\" DBName=\"studyhall\" DBUser=\"postgres\""
+image_repositories = []
+
+[default.global.parameters]
+region = "us-east-1"

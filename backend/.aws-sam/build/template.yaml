@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: StudyHall UBC Backend API
-
 Globals:
   Function:
     Timeout: 30
@@ -9,41 +8,41 @@ Globals:
     MemorySize: 256
     Environment:
       Variables:
-        DB_HOST: !Ref DBHost
-        DB_NAME: !Ref DBName
-        DB_USER: !Ref DBUser
-        DB_PORT: "5432"
-    Policies:
-      - Statement:
-          - Effect: Allow
-            Action: rds-db:connect
-            Resource: !Sub "arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:*/${DBUser}"
-          - Effect: Allow
-            Action: bedrock:InvokeModel
-            Resource: "arn:aws:bedrock:*::foundation-model/anthropic.claude-3-5-haiku-20241022-v1:0"
+        DB_HOST:
+          Ref: DBHost
+        DB_NAME:
+          Ref: DBName
+        DB_USER:
+          Ref: DBUser
+        DB_PASSWORD:
+          Ref: DBPassword
+        DB_PORT: '5432'
+        AWS_BEDROCK_REGION:
+          Ref: AWS::Region
   Api:
     Cors:
-      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
-      AllowHeaders: "'Content-Type,Authorization'"
-      AllowOrigin: "'*'"
-
+      AllowMethods: '''GET,POST,PUT,DELETE,OPTIONS'''
+      AllowHeaders: '''Content-Type,Authorization'''
+      AllowOrigin: '''*'''
 Parameters:
   DBHost:
     Type: String
-    Description: RDS Aurora PostgreSQL cluster endpoint
+    Description: RDS PostgreSQL endpoint
   DBName:
     Type: String
     Default: studyhall
   DBUser:
     Type: String
     Default: postgres
-
+  DBPassword:
+    Type: String
+    NoEcho: true
 Resources:
   GetSubjectsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/subjects.getSubjects
-      CodeUri: .
+      Handler: subjects.getSubjects
+      CodeUri: GetSubjectsFunction
       Events:
         Api:
           Type: Api
@@ -53,16 +52,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/subjects.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/subjects.ts
-
+      SamResourceId: GetSubjectsFunction
   GetSubjectDetailFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/subjects.getSubjectDetail
-      CodeUri: .
+      Handler: subjects.getSubjectDetail
+      CodeUri: GetSubjectDetailFunction
       Events:
         Api:
           Type: Api
@@ -72,16 +71,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/subjects.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/subjects.ts
-
+      SamResourceId: GetSubjectDetailFunction
   GetSessionsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/sessions.getSessions
-      CodeUri: .
+      Handler: sessions.getSessions
+      CodeUri: GetSessionsFunction
       Events:
         Api:
           Type: Api
@@ -91,16 +90,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/sessions.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/sessions.ts
-
+      SamResourceId: GetSessionsFunction
   GetSessionDetailFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/sessions.getSessionDetail
-      CodeUri: .
+      Handler: sessions.getSessionDetail
+      CodeUri: GetSessionDetailFunction
       Events:
         Api:
           Type: Api
@@ -110,16 +109,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/sessions.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/sessions.ts
-
+      SamResourceId: GetSessionDetailFunction
   RsvpFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/attendance.rsvpSession
-      CodeUri: .
+      Handler: attendance.rsvpSession
+      CodeUri: RsvpFunction
       Events:
         Api:
           Type: Api
@@ -129,16 +128,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/attendance.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/attendance.ts
-
+      SamResourceId: RsvpFunction
   CheckInFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/attendance.checkIn
-      CodeUri: .
+      Handler: attendance.checkIn
+      CodeUri: CheckInFunction
       Events:
         Api:
           Type: Api
@@ -148,16 +147,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/attendance.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/attendance.ts
-
+      SamResourceId: CheckInFunction
   GetAttendanceFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/attendance.getAttendance
-      CodeUri: .
+      Handler: attendance.getAttendance
+      CodeUri: GetAttendanceFunction
       Events:
         Api:
           Type: Api
@@ -167,16 +166,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/attendance.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/attendance.ts
-
+      SamResourceId: GetAttendanceFunction
   UploadNotesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/notes.uploadNotes
-      CodeUri: .
+      Handler: notes.uploadNotes
+      CodeUri: UploadNotesFunction
       Timeout: 60
       Events:
         Api:
@@ -187,16 +186,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/notes.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/notes.ts
-
+      SamResourceId: UploadNotesFunction
   GetGroupFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/groups.getGroup
-      CodeUri: .
+      Handler: groups.getGroup
+      CodeUri: GetGroupFunction
       Events:
         Api:
           Type: Api
@@ -206,16 +205,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/groups.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/groups.ts
-
+      SamResourceId: GetGroupFunction
   MatchGroupsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/groups.matchGroups
-      CodeUri: .
+      Handler: groups.matchGroups
+      CodeUri: MatchGroupsFunction
       Timeout: 120
       Events:
         Api:
@@ -226,16 +225,16 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/groups.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/groups.ts
-
+      SamResourceId: MatchGroupsFunction
   SeedFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/handlers/seed.seedDatabase
-      CodeUri: .
+      Handler: seed.seedDatabase
+      CodeUri: SeedFunction
       Timeout: 120
       Events:
         Api:
@@ -246,12 +245,13 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        EntryPoints:
+        - src/handlers/seed.ts
         Minify: true
         Target: es2022
-        EntryPoints:
-          - src/handlers/seed.ts
-
+      SamResourceId: SeedFunction
 Outputs:
   ApiUrl:
     Description: API Gateway endpoint URL
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod

@@ -1,13 +1,16 @@
--- StudyHall UBC: Initial Database Schema
--- This migration creates all application tables, enables RLS, adds indexes and unique constraints.
+-- StudyHall UBC: Database Schema (plain PostgreSQL / RDS)
+-- ============================================================================
+
+-- Enable uuid generation
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- ============================================================================
 -- TABLES
 -- ============================================================================
 
--- profiles
+-- profiles (standalone, no auth.users dependency)
 CREATE TABLE profiles (
-  id uuid PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   display_name text NOT NULL,
   year int,
@@ -117,22 +120,6 @@ CREATE TABLE attendance (
   checked_in_at timestamptz,
   UNIQUE (session_id, user_id)
 );
-
--- ============================================================================
--- ROW LEVEL SECURITY
--- ============================================================================
-
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE subjects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE enrollments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE note_uploads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE topic_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE study_groups ENABLE ROW LEVEL SECURITY;
-ALTER TABLE group_members ENABLE ROW LEVEL SECURITY;
-ALTER TABLE rooms ENABLE ROW LEVEL SECURITY;
-ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE attendance ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
 -- INDEXES
