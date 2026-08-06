@@ -1,248 +1,306 @@
-# StudyHall UBC — AWS Architecture
+# StudyHall UBC — Architecture
 
-## System Architecture Diagram
+## Overview
 
-```mermaid
-graph TB
-    subgraph Users["👤 Users (Browser)"]
-        Browser[Web Browser]
-    end
+StudyHall UBC runs entirely on AWS (us-east-1). The frontend is a Next.js app hosted on AWS Amplify. The backend is a set of Lambda functions behind API Gateway that connect to an RDS PostgreSQL database and Amazon Bedrock for AI.
 
-    subgraph AWS["☁️ AWS Cloud (us-east-1)"]
-        subgraph Amplify["AWS Amplify Hosting"]
-            CF[Amazon CloudFront<br/>CDN + HTTPS]
-            S3[Amazon S3<br/>Static Assets]
-            SSR[Lambda@Edge<br/>Server-Side Rendering]
-        end
+## Architecture Diagram
 
-        subgraph API["API Layer"]
-            APIGW[Amazon API Gateway<br/>REST API · CORS: *]
-        end
-
-        subgraph Compute["Compute Layer"]
-            L1[Lambda: getSubjects]
-            L2[Lambda: getSubjectDetail]
-            L3[Lambda: getSessions]
-            L4[Lambda: getSessionDetail]
-            L5[Lambda: getAttendance]
-            L6[Lambda: rsvpSession]
-            L7[Lambda: checkIn]
-            L8[Lambda: uploadNotes]
-            L9[Lambda: getGroup]
-            L10[Lambda: matchGroups]
-            L11[Lambda: seedDatabase]
-        end
-
-        subgraph Data["Data Layer"]
-            RDS[(Amazon RDS<br/>PostgreSQL 15<br/>db.t3.micro)]
-        end
-
-        subgraph AI["AI Layer"]
-            Bedrock[Amazon Bedrock<br/>Claude 3.5 Haiku]
-        end
-
-        subgraph Security["Security"]
-            IAM[AWS IAM<br/>Lambda Execution Role]
-        end
-    end
-
-    Browser -->|HTTPS| CF
-    CF -->|Static files| S3
-    CF -->|Dynamic pages| SSR
-    Browser -->|API calls| APIGW
-    
-    APIGW --> L1
-    APIGW --> L2
-    APIGW --> L3
-    APIGW --> L4
-    APIGW --> L5
-    APIGW --> L6
-    APIGW --> L7
-    APIGW --> L8
-    APIGW --> L9
-    APIGW --> L10
-    APIGW --> L11
-
-    L1 --> RDS
-    L2 --> RDS
-    L3 --> RDS
-    L4 --> RDS
-    L5 --> RDS
-    L6 --> RDS
-    L7 --> RDS
-    L8 --> RDS
-    L8 --> Bedrock
-    L9 --> RDS
-    L10 --> RDS
-    L10 --> Bedrock
-    L11 --> RDS
-
-    IAM -.->|Permissions| L1
-    IAM -.->|Permissions| L8
-    IAM -.->|Permissions| L10
-
-    style AWS fill:#f0f4ff,stroke:#2563eb
-    style Amplify fill:#e8f5e9,stroke:#4caf50
-    style API fill:#fff3e0,stroke:#ff9800
-    style Compute fill:#fce4ec,stroke:#e91e63
-    style Data fill:#e3f2fd,stroke:#2196f3
-    style AI fill:#f3e5f5,stroke:#9c27b0
-    style Security fill:#fff8e1,stroke:#ffc107
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                            AWS Cloud (us-east-1)                                  │
+│                                                                                   │
+│                                                                                   │
+│    ┌───────────────────────────────────────────────────────────────────────┐     │
+│    │                        AWS AMPLIFY HOSTING                             │     │
+│    │                                                                        │     │
+│    │    GitHub Repo ──▶ Auto Build ──▶ Deploy                              │     │
+│    │                                                                        │     │
+│    │    ┌──────────────┐    ┌────────────┐    ┌─────────────────────┐     │     │
+│    │    │  CloudFront   │    │    S3      │    │   Lambda@Edge       │     │     │
+│    │    │  (Global CDN) │    │  (Static   │    │   (Server-Side      │     │     │
+│    │    │  HTTPS + Edge │    │   Assets)  │    │    Rendering)       │     │     │
+│    │    │  Caching)     │    │  JS/CSS/   │    │   Next.js Pages     │     │     │
+│    │    │               │    │  Images    │    │                     │     │     │
+│    │    └───────────────┘    └────────────┘    └─────────────────────┘     │     │
+│    │                                                                        │     │
+│    └────────────────────────────────────────────────────────────────────────┘     │
+│                                        │                                          │
+│                                        │ fetch("/api/...")                         │
+│                                        ▼                                          │
+│    ┌────────────────────────────────────────────────────────────────────────┐     │
+│    │                     AMAZON API GATEWAY (REST)                           │     │
+│    │                     CORS: Access-Control-Allow-Origin: *                │     │
+│    │                                                                        │     │
+│    │    GET  /api/subjects                 GET  /api/subjects/{code}         │     │
+│    │    GET  /api/sessions                 GET  /api/sessions/{id}           │     │
+│    │    GET  /api/sessions/{id}/attendance                                   │     │
+│    │    POST /api/sessions/{id}/rsvp       POST /api/sessions/{id}/checkin   │     │
+│    │    POST /api/notes                                                      │     │
+│    │    GET  /api/groups/{id}              POST /api/courses/{id}/match      │     │
+│    │    POST /api/seed                                                       │     │
+│    │                                                                        │     │
+│    └───────────────────────────────────┬────────────────────────────────────┘     │
+│                                        │                                          │
+│                                        │ Routes request to Lambda                  │
+│                                        ▼                                          │
+│    ┌────────────────────────────────────────────────────────────────────────┐     │
+│    │                      AWS LAMBDA (Node.js 20)                            │     │
+│    │                      Serverless Functions                                │     │
+│    │                                                                        │     │
+│    │    ┌────────────┐ ┌────────────┐ ┌──────────────┐ ┌──────────────┐   │     │
+│    │    │  subjects   │ │  sessions  │ │  attendance  │ │    notes     │   │     │
+│    │    │  handler    │ │  handler   │ │   handler    │ │   handler    │   │     │
+│    │    └──────┬──────┘ └──────┬─────┘ └──────┬───────┘ └──────┬───────┘   │     │
+│    │           │               │              │                │            │     │
+│    │    ┌──────┴──────┐ ┌──────┴──────┐                        │            │     │
+│    │    │   groups    │ │    seed     │                        │            │     │
+│    │    │   handler   │ │   handler   │                        │            │     │
+│    │    └──────┬──────┘ └──────┬──────┘                        │            │     │
+│    │           │               │                               │            │     │
+│    │    ┌──────┴───────────────┴───────────────────────────────┘            │     │
+│    │    │                                                                    │     │
+│    │    │   Shared Libraries:                                                │     │
+│    │    │     db.ts      → PostgreSQL connection pool (pg)                   │     │
+│    │    │     bedrock.ts → Bedrock API client (Claude Haiku 4.5)            │     │
+│    │    │     response.ts → CORS response helpers                            │     │
+│    │    │                                                                    │     │
+│    │    └────────────────────────────────────────────────────────────────────┘     │
+│    │                                                                        │     │
+│    └───────────────────┬────────────────────────────────┬───────────────────┘     │
+│                        │                                │                          │
+│                        ▼                                ▼                          │
+│    ┌─────────────────────────────┐    ┌─────────────────────────────────────┐     │
+│    │     AMAZON RDS              │    │        AMAZON BEDROCK                │     │
+│    │     (PostgreSQL 15)         │    │                                      │     │
+│    │                             │    │   Model: Claude 3.5 Haiku            │     │
+│    │   ┌───────────────────┐    │    │   (anthropic.claude-3-5-haiku-       │     │
+│    │   │ Tables:           │    │    │    20241022-v1:0)                     │     │
+│    │   │                   │    │    │                                      │     │
+│    │   │ • subjects        │    │    │   AI Capabilities:                    │     │
+│    │   │ • courses         │    │    │   ┌────────────────────────────┐     │     │
+│    │   │ • profiles        │    │    │   │ 1. Topic Extraction        │     │     │
+│    │   │ • enrollments     │    │    │   │    Notes → Topics +        │     │     │
+│    │   │ • note_uploads    │    │    │   │    Confidence Scores       │     │     │
+│    │   │ • topic_profiles  │    │    │   ├────────────────────────────┤     │     │
+│    │   │ • study_groups    │    │    │   │ 2. Group Naming            │     │     │
+│    │   │ • group_members   │    │    │   │    Generate playful        │     │     │
+│    │   │ • rooms           │    │    │   │    group names + rationale │     │     │
+│    │   │ • sessions        │    │    │   ├────────────────────────────┤     │     │
+│    │   │ • attendance      │    │    │   │ 3. Timeline Generation     │     │     │
+│    │   │                   │    │    │   │    Plan 6 study sessions   │     │     │
+│    │   │ Instance:         │    │    │   │    with topics + goals     │     │     │
+│    │   │ db.t3.micro       │    │    │   └────────────────────────────┘     │     │
+│    │   │ (Free Tier)       │    │    │                                      │     │
+│    │   └───────────────────┘    │    └─────────────────────────────────────┘     │
+│    │                             │                                                │
+│    └─────────────────────────────┘                                                │
+│                                                                                   │
+│    ┌────────────────────────────────────────────────────────────────────────┐     │
+│    │                          AWS IAM                                        │     │
+│    │                                                                        │     │
+│    │   Lambda Execution Role:                                                │     │
+│    │   • AmazonRDSDataFullAccess (connect to PostgreSQL)                    │     │
+│    │   • AmazonBedrockFullAccess (invoke Claude Haiku model)                │     │
+│    │   • CloudWatchLogsFullAccess (write execution logs)                     │     │
+│    │   • VPC access (reach RDS in private subnet)                           │     │
+│    │                                                                        │     │
+│    └────────────────────────────────────────────────────────────────────────┘     │
+│                                                                                   │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Request Flow
 
-```mermaid
-sequenceDiagram
-    participant U as User Browser
-    participant CF as CloudFront
-    participant SSR as Lambda@Edge (SSR)
-    participant API as API Gateway
-    participant L as Lambda Function
-    participant DB as RDS PostgreSQL
-    participant AI as Bedrock (Claude)
+### 1. User visits the website
 
-    Note over U,AI: Page Load Flow
-    U->>CF: GET /subjects
-    CF->>SSR: Render page server-side
-    SSR->>API: GET /api/subjects
-    API->>L: Invoke getSubjects
-    L->>DB: SELECT subjects + counts
-    DB-->>L: Result rows
-    L-->>API: JSON response
-    API-->>SSR: Subjects data
-    SSR-->>CF: Rendered HTML
-    CF-->>U: HTML + JS
-
-    Note over U,AI: AI Note Analysis Flow
-    U->>API: POST /api/notes (PDF text)
-    API->>L: Invoke uploadNotes
-    L->>DB: INSERT note_uploads
-    L->>AI: Analyze topics (Claude Haiku)
-    AI-->>L: JSON {topics, pace, summary}
-    L->>DB: UPSERT topic_profiles
-    L-->>API: Extraction result
-    API-->>U: Topic chips displayed
-
-    Note over U,AI: RSVP + Polling Flow
-    U->>API: POST /api/sessions/{id}/rsvp
-    API->>L: Invoke rsvpSession
-    L->>DB: UPSERT attendance
-    L-->>API: {message: "confirmed"}
-    API-->>U: Success toast
-    loop Every 3 seconds
-        U->>API: GET /api/sessions/{id}/attendance
-        API->>L: Invoke getAttendance
-        L->>DB: SELECT attendees
-        L-->>API: {attendees, counts}
-        API-->>U: Update UI
-    end
+```
+User's Browser
+    │
+    ▼
+CloudFront (CDN, edge location nearest to user)
+    │
+    ├── Static asset (JS/CSS/image)? → Serve from S3 cache
+    │
+    └── Dynamic page? → Lambda@Edge renders Next.js → Returns HTML
 ```
 
-## Database Schema
+### 2. Page fetches data from API
 
-```mermaid
-erDiagram
-    subjects ||--o{ courses : has
-    courses ||--o{ enrollments : has
-    courses ||--o{ study_groups : has
-    profiles ||--o{ enrollments : has
-    profiles ||--o{ note_uploads : has
-    profiles ||--o{ topic_profiles : has
-    profiles ||--o{ group_members : belongs_to
-    profiles ||--o{ attendance : has
-    study_groups ||--o{ group_members : has
-    study_groups ||--o{ sessions : has
-    rooms ||--o{ sessions : hosts
-    subjects ||--o{ sessions : categorizes
-    sessions ||--o{ attendance : has
+```
+Browser (React component)
+    │
+    │  fetch("https://xyz.execute-api.us-east-1.amazonaws.com/Prod/api/subjects")
+    ▼
+API Gateway (validates request, applies CORS headers)
+    │
+    ▼
+Lambda Function (subjects handler)
+    │
+    │  SQL: SELECT * FROM subjects ...
+    ▼
+RDS PostgreSQL (returns rows)
+    │
+    ▼
+Lambda formats JSON response
+    │
+    ▼
+API Gateway adds CORS headers → Browser receives JSON
+```
 
-    subjects {
-        uuid id PK
-        text code UK
-        text name
-        text colour
-    }
-    courses {
-        uuid id PK
-        uuid subject_id FK
-        text code
-        text title
-        text term
-    }
-    profiles {
-        uuid id PK
-        text email UK
-        text display_name
-        int year
-        text program
-    }
-    study_groups {
-        uuid id PK
-        uuid course_id FK
-        text name
-        text rationale
-    }
-    sessions {
-        uuid id PK
-        uuid group_id FK
-        uuid room_id FK
-        date date
-        time start_time
-        time end_time
-        text topic
-        char checkin_code
-    }
-    attendance {
-        uuid id PK
-        uuid session_id FK
-        uuid user_id FK
-        text status
-    }
-    rooms {
-        uuid id PK
-        text name
-        text building
-        int capacity
-    }
+### 3. Student uploads notes (AI pipeline)
+
+```
+Browser
+    │
+    │  POST /api/notes { user_id, course_id, raw_text }
+    ▼
+API Gateway → Lambda (notes handler)
+    │
+    ├── 1. INSERT INTO note_uploads (store raw text in RDS)
+    │
+    ├── 2. Call Bedrock (Claude Haiku 4.5)
+    │       System: "Analyze student notes, extract 4-8 topics..."
+    │       → Returns: { topics: [...], overall_pace, summary }
+    │
+    ├── 3. UPSERT INTO topic_profiles (store AI results in RDS)
+    │
+    └── 4. Return extracted topics to browser
+            → Browser renders topic chips with confidence colors
+```
+
+### 4. Group matching algorithm
+
+```
+POST /api/courses/{id}/match
+    │
+    ▼
+Lambda (groups handler)
+    │
+    ├── 1. SELECT topic_profiles WHERE course_id = X (from RDS)
+    │
+    ├── 2. Build topic confidence vectors per student
+    │
+    ├── 3. Run greedy complementarity algorithm:
+    │       Score = Σ(max_confidence - min_confidence) per topic
+    │       Penalize pace differences > 1 step
+    │       Form groups of 4-6 maximizing complementarity
+    │
+    ├── 4. Call Bedrock for each group:
+    │       → Generate playful name + rationale
+    │
+    ├── 5. INSERT INTO study_groups + group_members (RDS)
+    │
+    └── 6. Return formed groups with scores
+```
+
+### 5. RSVP + live attendance (polling)
+
+```
+User clicks "RSVP"
+    │
+    │  POST /api/sessions/{id}/rsvp { user_id }
+    ▼
+Lambda → INSERT INTO attendance → Success
+    
+Meanwhile, browser polls every 3 seconds:
+    │
+    │  GET /api/sessions/{id}/attendance
+    ▼
+Lambda → SELECT FROM attendance → Returns current count + attendees
+    │
+    ▼
+Browser updates UI with new counts (no page refresh)
 ```
 
 ## AWS Services Used
 
-| Service | Purpose | Free Tier |
-|---------|---------|-----------|
-| **Amplify Hosting** | Next.js frontend with SSR, CI/CD from GitHub | 1000 build min/mo, 15 GB served |
-| **CloudFront** | Global CDN, HTTPS, edge caching | 1 TB transfer/mo |
-| **S3** | Static asset storage (JS, CSS, images) | 5 GB storage |
-| **API Gateway** | REST API routing, CORS, request validation | 1M calls/mo |
-| **Lambda** | Serverless compute (Node.js 20, 11 functions) | 1M invocations/mo |
-| **RDS PostgreSQL** | Relational database (11 tables) | 750 hrs db.t3.micro/mo |
-| **Bedrock** | AI inference (Claude 3.5 Haiku) | Pay per token (~$0.001/req) |
-| **IAM** | Permissions and service roles | Free |
+| # | Service | Purpose | Free Tier |
+|---|---------|---------|-----------|
+| 1 | **AWS Amplify** | Frontend hosting, CI/CD from GitHub, SSR | 1000 build min/mo, 15 GB served |
+| 2 | **Amazon CloudFront** | Global CDN, HTTPS, edge caching | 1 TB/month |
+| 3 | **Amazon S3** | Static asset storage (JS, CSS, images) | 5 GB |
+| 4 | **API Gateway** | REST API routing, CORS, throttling | 1M calls/month |
+| 5 | **AWS Lambda** | Serverless backend compute (Node.js 20) | 1M invocations/month |
+| 6 | **Amazon RDS** | PostgreSQL database (11 tables) | 750 hrs db.t3.micro |
+| 7 | **Amazon Bedrock** | AI inference (Claude Haiku 4.5) | Pay per token (~$0.001/req) |
+| 8 | **AWS IAM** | Permissions and access control | Free |
 
-## Deployment Pipeline
+## Database Schema (RDS PostgreSQL)
 
-```mermaid
-graph LR
-    subgraph Developer
-        Code[Push to GitHub]
-    end
-
-    subgraph Frontend["Frontend Deploy"]
-        A1[Amplify detects push]
-        A2[npm install + npm run build]
-        A3[Deploy to CloudFront + S3]
-    end
-
-    subgraph Backend["Backend Deploy"]
-        B1[sam build]
-        B2[sam deploy]
-        B3[CloudFormation creates/updates<br/>API Gateway + Lambdas]
-    end
-
-    Code --> A1 --> A2 --> A3
-    Code --> B1 --> B2 --> B3
-
-    style Frontend fill:#e8f5e9,stroke:#4caf50
-    style Backend fill:#fce4ec,stroke:#e91e63
 ```
+subjects ──────┐
+               │ 1:N
+courses ───────┤
+  │            │
+  │ N:M        │
+enrollments    │
+  │            │
+profiles ──────┤
+  │            │
+  │            │
+note_uploads   │
+  │            │
+topic_profiles │
+               │
+study_groups ──┤
+  │            │
+group_members  │
+               │
+rooms ─────────┤
+               │
+sessions ──────┘
+  │
+attendance
+```
+
+## Project Structure
+
+```
+CIC-Hack/
+├── src/                          # Next.js frontend (deploys to Amplify)
+│   ├── app/                      # App Router pages
+│   │   ├── page.tsx              # Landing page
+│   │   ├── subjects/             # Subject browsing
+│   │   ├── sessions/             # Session detail + RSVP
+│   │   ├── groups/               # Group detail
+│   │   ├── notes/                # PDF upload + topic extraction
+│   │   └── me/                   # Redirect
+│   ├── components/               # React components
+│   └── lib/
+│       └── api.ts                # API client (fetches from API Gateway)
+│
+├── backend/                      # Lambda backend (deploys via SAM)
+│   ├── src/
+│   │   ├── handlers/             # Lambda function handlers
+│   │   │   ├── subjects.ts       # GET /subjects, GET /subjects/{code}
+│   │   │   ├── sessions.ts       # GET /sessions, GET /sessions/{id}
+│   │   │   ├── attendance.ts     # RSVP, check-in, get attendance
+│   │   │   ├── notes.ts          # POST /notes (+ Bedrock AI call)
+│   │   │   ├── groups.ts         # GET /groups/{id}, POST match
+│   │   │   └── seed.ts           # POST /seed (populate demo data)
+│   │   └── lib/
+│   │       ├── db.ts             # PostgreSQL connection (pg library)
+│   │       ├── bedrock.ts        # Bedrock client (Claude Haiku)
+│   │       └── response.ts       # JSON response + CORS helpers
+│   ├── sql/
+│   │   ├── schema.sql            # Database table definitions
+│   │   └── seed.sql              # Demo data (subjects, rooms, courses)
+│   ├── template.yaml             # AWS SAM deployment template
+│   └── package.json              # Backend dependencies
+│
+├── amplify.yml                   # Amplify build configuration
+├── AWS_DEPLOYMENT.md             # Deployment instructions
+├── ARCHITECTURE.md               # This file
+└── DECISIONS.md                  # Design decisions
+```
+
+## Key Design Decisions
+
+1. **Serverless over EC2** — No servers to manage, auto-scales, pay per request
+2. **API Gateway + Lambda over AppRunner/ECS** — Simpler for a hackathon, true serverless
+3. **RDS over DynamoDB** — Relational data with JOINs (groups ↔ members ↔ profiles)
+4. **Bedrock over SageMaker** — Managed model access, no deployment needed
+5. **Polling over WebSockets** — Simpler than API Gateway WebSocket API for a demo
+6. **No auth** — Public-facing demo, faster to build and present
+7. **CORS: */** — Open access for demo purposes
