@@ -1,6 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
-import { getServerEnv } from "@/lib/env";
 
 /**
  * Zod schema for a single study session plan.
@@ -146,93 +144,16 @@ export function formatDate(date: Date): string {
 }
 
 /**
- * Generates a study session timeline using the Google Gemini API.
- * Produces exactly 6 sessions on weekdays, 90 minutes each, ordered from weakest to strongest topics.
- *
- * Retries once on validation failure.
+ * DEPRECATED: Timeline generation now happens in the Lambda backend via Bedrock.
+ * This function is kept as a stub for type compatibility during migration.
  */
 export async function generateTimeline(
-  groupProfiles: TopicProfileInput[],
-  courseCode: string,
-  today: Date,
-  examDate: Date
+  _groupProfiles: TopicProfileInput[],
+  _courseCode: string,
+  _today: Date,
+  _examDate: Date
 ): Promise<TimelineResult> {
-  const env = getServerEnv();
-  const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-  const aggregatedTopics = aggregateTopicProfiles(groupProfiles);
-
-  const topicSummary = aggregatedTopics
-    .map(
-      (t) =>
-        `- ${t.topic}: avg confidence ${t.avgConfidence.toFixed(1)}/5 (${t.memberCount} members)`
-    )
-    .join("\n");
-
-  const userMessage = `Course: ${courseCode}
-Today's date: ${formatDate(today)}
-Exam date: ${formatDate(examDate)}
-
-Group Topic Profiles (sorted weakest to strongest):
-${topicSummary}
-
-Generate exactly 6 study sessions as JSON in this format:
-{
-  "sessions": [
-    {
-      "date": "YYYY-MM-DD",
-      "start_time": "HH:MM",
-      "end_time": "HH:MM",
-      "topic": "Topic Name",
-      "goal": "Action-oriented one-line goal"
-    }
-  ]
-}`;
-
-  const callAI = async (): Promise<TimelineResult> => {
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: userMessage }] }],
-      systemInstruction: { role: "model", parts: [{ text: SYSTEM_PROMPT }] },
-      generationConfig: {
-        responseMimeType: "application/json",
-        maxOutputTokens: 1024,
-      },
-    });
-
-    let jsonText = result.response.text().trim();
-    if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-    }
-
-    const parsed = JSON.parse(jsonText);
-    const validated = TimelineResultSchema.parse(parsed);
-
-    // Additional business logic validation
-    postValidateTimeline(validated);
-
-    return validated;
-  };
-
-  // First attempt
-  try {
-    return await callAI();
-  } catch (firstError) {
-    // Retry once on validation failures (Zod, post-validation, or JSON parse errors)
-    if (
-      firstError instanceof z.ZodError ||
-      firstError instanceof SyntaxError ||
-      (firstError instanceof Error && firstError.message.includes("Session"))
-    ) {
-      try {
-        return await callAI();
-      } catch (secondError) {
-        throw new Error(
-          `AI timeline generation failed after retry: ${(secondError as Error).message}`
-        );
-      }
-    }
-
-    throw firstError;
-  }
+  throw new Error(
+    "generateTimeline has been moved to the Lambda backend. Use the API client instead."
+  );
 }

@@ -3,12 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-interface NavProps {
-  user: { id: string; email?: string } | null;
-  displayName?: string | null;
-}
-
-export function Nav({ user, displayName }: NavProps) {
+export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -32,29 +27,6 @@ export function Nav({ user, displayName }: NavProps) {
           >
             Notes
           </Link>
-          <Link
-            href="/me"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            My Sessions
-          </Link>
-          {user ? (
-            <span className="inline-flex h-8 items-center gap-2 rounded-full bg-muted px-3 text-sm font-medium">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                {(displayName ?? user.email ?? "U").charAt(0).toUpperCase()}
-              </span>
-              <span className="max-w-[120px] truncate">
-                {displayName ?? user.email?.split("@")[0] ?? "User"}
-              </span>
-            </span>
-          ) : (
-            <Link
-              href="/auth"
-              className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
-            >
-              Sign In
-            </Link>
-          )}
         </div>
 
         {/* Mobile hamburger button */}
@@ -117,32 +89,6 @@ export function Nav({ user, displayName }: NavProps) {
             >
               Notes
             </Link>
-            <Link
-              href="/me"
-              className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              onClick={() => setMobileOpen(false)}
-            >
-              My Sessions
-            </Link>
-            <div className="my-2 border-t border-border" />
-            {user ? (
-              <div className="flex items-center gap-2 px-3 py-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {(displayName ?? user.email ?? "U").charAt(0).toUpperCase()}
-                </span>
-                <span className="text-sm font-medium">
-                  {displayName ?? user.email?.split("@")[0] ?? "User"}
-                </span>
-              </div>
-            ) : (
-              <Link
-                href="/auth"
-                className="rounded-md bg-primary px-3 py-2 text-center text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
-                onClick={() => setMobileOpen(false)}
-              >
-                Sign In
-              </Link>
-            )}
           </div>
         </div>
       )}

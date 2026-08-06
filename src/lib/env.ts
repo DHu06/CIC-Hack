@@ -2,33 +2,23 @@ import { z } from "zod";
 
 /**
  * Server-side environment variables schema.
- * Validated at runtime — the app crashes at startup with a clear message
- * if any required variable is missing.
+ * With the AWS migration, most secrets live in Lambda env vars.
+ * The frontend only needs the API URL.
  */
 const serverEnvSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url("NEXT_PUBLIC_SUPABASE_URL must be a valid URL"),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "NEXT_PUBLIC_SUPABASE_ANON_KEY is required"),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, "SUPABASE_SERVICE_ROLE_KEY is required"),
-  GEMINI_API_KEY: z.string().min(1, "GEMINI_API_KEY is required"),
+  NEXT_PUBLIC_API_URL: z.string().min(1, "NEXT_PUBLIC_API_URL is required"),
 });
 
 /**
  * Client-side environment variables schema.
- * Only NEXT_PUBLIC_ variables are available in the browser.
  */
 const clientEnvSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url("NEXT_PUBLIC_SUPABASE_URL must be a valid URL"),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "NEXT_PUBLIC_SUPABASE_ANON_KEY is required"),
+  NEXT_PUBLIC_API_URL: z.string().min(1, "NEXT_PUBLIC_API_URL is required"),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 export type ClientEnv = z.infer<typeof clientEnvSchema>;
 
-/**
- * Validates server-side environment variables.
- * Call this in server-side code (Server Components, Server Actions, Route Handlers).
- * Throws immediately with a clear error listing missing variables.
- */
 export function getServerEnv(): ServerEnv {
   const parsed = serverEnvSchema.safeParse(process.env);
   if (!parsed.success) {
@@ -43,17 +33,12 @@ export function getServerEnv(): ServerEnv {
   return parsed.data;
 }
 
-/**
- * Validates client-side (public) environment variables.
- * Call this in client-side code when needed.
- */
 export function getClientEnv(): ClientEnv {
   const parsed = clientEnvSchema.safeParse({
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   });
   if (!parsed.success) {
-    throw new Error("Missing required public environment variables. Check your .env.local file.");
+    throw new Error("Missing NEXT_PUBLIC_API_URL environment variable.");
   }
   return parsed.data;
 }
