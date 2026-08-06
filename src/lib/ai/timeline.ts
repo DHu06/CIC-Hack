@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
 import { getServerEnv } from "@/lib/env";
 
@@ -138,7 +138,7 @@ export function postValidateTimeline(result: TimelineResult): void {
 /**
  * Formats a Date as YYYY-MM-DD.
  */
-function formatDate(date: Date): string {
+export function formatDate(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -146,7 +146,7 @@ function formatDate(date: Date): string {
 }
 
 /**
- * Generates a study session timeline using the Anthropic API.
+ * Generates a study session timeline using the Google Gemini API.
  * Produces exactly 6 sessions on weekdays, 90 minutes each, ordered from weakest to strongest topics.
  *
  * Retries once on validation failure.
@@ -158,7 +158,8 @@ export async function generateTimeline(
   examDate: Date
 ): Promise<TimelineResult> {
   const env = getServerEnv();
-  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+  const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const aggregatedTopics = aggregateTopicProfiles(groupProfiles);
 
@@ -190,20 +191,16 @@ Generate exactly 6 study sessions as JSON in this format:
 }`;
 
   const callAI = async (): Promise<TimelineResult> => {
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: userMessage }],
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: userMessage }] }],
+      systemInstruction: { role: "model", parts: [{ text: SYSTEM_PROMPT }] },
+      generationConfig: {
+        responseMimeType: "application/json",
+        maxOutputTokens: 1024,
+      },
     });
 
-    const textBlock = response.content.find((block) => block.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
-      throw new Error("No text content in Anthropic response");
-    }
-
-    // Extract JSON from response (handle possible markdown code blocks)
-    let jsonText = textBlock.text.trim();
+    let jsonText = result.response.text().trim();
     if (jsonText.startsWith("```")) {
       jsonText = jsonText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
     }
@@ -230,17 +227,9 @@ Generate exactly 6 study sessions as JSON in this format:
       try {
         return await callAI();
       } catch (secondError) {
-        if (secondError instanceof z.ZodError) {
-          throw new Error(
-            `AI timeline generation failed schema validation after retry: ${secondError.message}`
-          );
-        }
-        if (secondError instanceof SyntaxError) {
-          throw new Error(
-            `AI timeline generation returned invalid JSON after retry: ${secondError.message}`
-          );
-        }
-        throw secondError;
+        throw new Error(
+          `AI timeline generation failed after retry: ${(secondError as Error).message}`
+        );
       }
     }
 

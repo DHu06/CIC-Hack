@@ -17,7 +17,7 @@ describe("env validation", () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_URL;
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     delete process.env.SUPABASE_SERVICE_ROLE_KEY;
-    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.GEMINI_API_KEY;
 
     expect(() => getServerEnv()).toThrow("Missing or invalid environment variables");
   });
@@ -26,18 +26,18 @@ describe("env validation", () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test.supabase.co";
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "test-anon-key";
     process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-role-key";
-    process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+    process.env.GEMINI_API_KEY = "test-gemini-key";
 
     const env = getServerEnv();
     expect(env.NEXT_PUBLIC_SUPABASE_URL).toBe("https://test.supabase.co");
-    expect(env.ANTHROPIC_API_KEY).toBe("sk-ant-test-key");
+    expect(env.GEMINI_API_KEY).toBe("test-gemini-key");
   });
 
   it("rejects invalid URL for NEXT_PUBLIC_SUPABASE_URL", () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = "not-a-url";
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "test-anon-key";
     process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-role-key";
-    process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+    process.env.GEMINI_API_KEY = "test-gemini-key";
 
     expect(() => getServerEnv()).toThrow("Missing or invalid environment variables");
   });

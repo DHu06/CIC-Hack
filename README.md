@@ -9,7 +9,7 @@ AI-powered complementary study groups for UBC students. Upload your course notes
   - Project URL
   - Anon (public) key
   - Service role key
-- **Anthropic API key** (for AI features; not required for seeding)
+- **Google Gemini API key** (for AI features; not required for seeding)
 
 ## Setup
 
@@ -31,7 +31,7 @@ Edit `.env.local` and fill in your keys:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-ANTHROPIC_API_KEY=your-anthropic-key
+GEMINI_API_KEY=your-gemini-api-key
 ```
 
 ### Database Setup
@@ -48,7 +48,7 @@ Then seed with sample data:
 npm run seed
 ```
 
-> **Note:** `npm run seed` does not require an Anthropic API key. It uses pre-computed topic profiles, pre-formed study groups, and pre-generated sessions rather than calling the live AI pipeline.
+> **Note:** `npm run seed` does not require a Gemini API key. It uses pre-computed topic profiles, pre-formed study groups, and pre-generated sessions rather than calling the live AI pipeline.
 
 ## Running
 
@@ -75,14 +75,14 @@ npm run lint
 ## Architecture
 
 ```
-Next.js App Router + Supabase + Anthropic AI
+Next.js App Router + Supabase + Google Gemini AI
 ```
 
 The application follows a server-first architecture:
 
 - **React Server Components** fetch data directly from Supabase on the server
 - **Server Actions** handle form submissions and mutations
-- **AI Pipeline** runs exclusively on the server (Anthropic SDK never reaches the client bundle)
+- **AI Pipeline** runs exclusively on the server (Gemini SDK never reaches the client bundle)
 - **Supabase Realtime** powers live attendance updates via client-side subscriptions
 - **Row Level Security (RLS)** enforces all access control at the database layer
 
@@ -105,7 +105,7 @@ The application follows a server-first architecture:
 | Database | Supabase (Postgres) |
 | Auth | Supabase Email OTP (`@supabase/ssr`) |
 | Realtime | Supabase Realtime (WebSocket subscriptions) |
-| AI | Anthropic Claude (topic extraction, group naming, timeline generation) |
+| AI | Google Gemini 2.0 Flash (topic extraction, group naming, timeline generation) |
 | Validation | Zod |
 | Testing | Vitest, fast-check (property-based testing) |
 | Notifications | Sonner (shadcn/ui toast) |
@@ -129,7 +129,7 @@ src/
     use-attendance.ts     # Realtime attendance subscription
   lib/
     ai/
-      extract.ts          # Topic extraction (Anthropic)
+      extract.ts          # Topic extraction (Google Gemini)
       match.ts            # Complementarity scoring + greedy group formation
       match-orchestrator.ts # Full matching pipeline
       sessions.ts         # Session generation utilities

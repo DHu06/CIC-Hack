@@ -4,7 +4,7 @@
  * and writes results to the database.
  */
 
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI, type GenerativeModel } from "@google/generative-ai";
 import { z } from "zod";
 import { getServerEnv } from "@/lib/env";
 import { createServiceRoleClient } from "@/lib/supabase/server";
@@ -36,10 +36,10 @@ export const GroupNamingSchema = z.object({
 export type GroupNaming = z.infer<typeof GroupNamingSchema>;
 
 /**
- * Generates a playful group name and rationale using Anthropic.
+ * Generates a playful group name and rationale using Google Gemini.
  */
 async function generateGroupName(
-  client: Anthropic,
+  model: GenerativeModel,
   courseCode: string,
   memberSummaries: string[]
 ): Promise<GroupNaming> {
@@ -52,21 +52,16 @@ Generate a JSON object with:
 - "name": a playful 2-3 word group name themed on the course
 - "rationale": a one-sentence rationale explaining why these members complement each other`;
 
-  const response = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 256,
-    system:
-      "Generate a playful 2-3 word group name themed on the course and a one-sentence rationale explaining why these members complement each other. Return only JSON.",
-    messages: [{ role: "user", content: userMessage }],
+  const result = await model.generateContent({
+    contents: [{ role: "user", parts: [{ text: userMessage }] }],
+    systemInstruction: { role: "model", parts: [{ text: "Generate a playful 2-3 word group name themed on the course and a one-sentence rationale explaining why these members complement each other. Return only valid JSON, no markdown." }] },
+    generationConfig: {
+      responseMimeType: "application/json",
+      maxOutputTokens: 256,
+    },
   });
 
-  const textBlock = response.content.find((block) => block.type === "text");
-  if (!textBlock || textBlock.type !== "text") {
-    throw new Error("No text content in Anthropic response for group naming");
-  }
-
-  // Extract JSON from response (handle possible markdown code blocks)
-  let jsonText = textBlock.text.trim();
+  let jsonText = result.response.text().trim();
   if (jsonText.startsWith("```")) {
     jsonText = jsonText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
   }
@@ -160,7 +155,8 @@ export async function matchGroups(courseId: string): Promise<GroupMatchResult[]>
   const courseCode = courseData.code;
 
   // 5. Generate AI names for each group
-  const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+  const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const groupResults: Array<{
     members: TopicVector[];
@@ -186,7 +182,7 @@ export async function matchGroups(courseId: string): Promise<GroupMatchResult[]>
 
     let naming: GroupNaming;
     try {
-      naming = await generateGroupName(anthropic, courseCode, memberSummaries);
+      naming = await generateGroupName(model, courseCode, memberSummaries);
     } catch {
       // Fallback naming if AI fails
       naming = {
