@@ -99,6 +99,58 @@ export function assignLeftovers(
 }
 
 /**
+ * Compute target group sizes that ensure all members are placed in groups
+ * of minSize to maxSize members.
+ *
+ * For any n >= minSize, finds a partition into groups where each group
+ * has between minSize and maxSize members.
+ *
+ * @param n - Total number of members
+ * @param minSize - Minimum group size
+ * @param maxSize - Maximum group size
+ * @returns Array of target sizes for each group, or empty if impossible
+ */
+function computeGroupSizes(
+  n: number,
+  minSize: number,
+  maxSize: number
+): number[] {
+  if (n < minSize) return [];
+
+  // Try to partition n into groups of minSize to maxSize
+  // Strategy: use as many groups of minSize as possible, then distribute remainder
+  const numGroups = Math.ceil(n / maxSize);
+  const baseSize = Math.floor(n / numGroups);
+  const extra = n - baseSize * numGroups;
+
+  const sizes: number[] = [];
+  for (let i = 0; i < numGroups; i++) {
+    sizes.push(baseSize + (i < extra ? 1 : 0));
+  }
+
+  // Verify all sizes are within bounds
+  if (sizes.every((s) => s >= minSize && s <= maxSize)) {
+    return sizes;
+  }
+
+  // Fallback: try different number of groups
+  for (let g = Math.ceil(n / maxSize); g <= Math.floor(n / minSize); g++) {
+    const base = Math.floor(n / g);
+    const remainder = n - base * g;
+    const attempt = Array.from({ length: g }, (_, i) =>
+      base + (i < remainder ? 1 : 0)
+    );
+    if (attempt.every((s) => s >= minSize && s <= maxSize)) {
+      return attempt;
+    }
+  }
+
+  // If truly impossible (shouldn't happen for reasonable inputs), 
+  // use a single group allowing slight overflow
+  return [n];
+}
+
+/**
  * Greedy group formation algorithm.
  *
  * Forms groups of minSize to maxSize students by greedily adding the member
@@ -107,8 +159,8 @@ export function assignLeftovers(
  * Algorithm:
  * 1. If fewer than minSize vectors, return []
  * 2. Copy the input (don't mutate)
- * 3. While remaining >= minSize: seed a group, greedily add best-scoring members
- * 4. Assign leftovers to existing groups
+ * 3. Compute target group sizes to ensure all members are placed
+ * 4. For each target size: seed a group, greedily add best-scoring members
  *
  * Postconditions:
  * - Every input vector appears in exactly one output group
@@ -129,15 +181,18 @@ export function greedyGroupFormation(
   }
 
   const remaining = [...vectors];
+  const targetSizes = computeGroupSizes(vectors.length, minSize, maxSize);
   const groups: TopicVector[][] = [];
 
-  while (remaining.length >= minSize) {
+  for (const targetSize of targetSizes) {
+    if (remaining.length === 0) break;
+
     // Take the first remaining user as seed
     const seed = remaining.shift()!;
     const group: TopicVector[] = [seed];
 
-    // Greedily add members that maximize complementarity
-    while (group.length < maxSize && remaining.length > 0) {
+    // Greedily add members that maximize complementarity until target size
+    while (group.length < targetSize && remaining.length > 0) {
       let bestIdx = -1;
       let bestScore = -Infinity;
 
@@ -150,27 +205,13 @@ export function greedyGroupFormation(
         }
       }
 
-      // Stop adding if we already have minSize and adding more doesn't improve score
-      if (
-        group.length >= minSize &&
-        bestScore <= computeComplementarityScore(group)
-      ) {
-        break;
-      }
-
       group.push(remaining.splice(bestIdx, 1)[0]);
     }
 
-    if (group.length >= minSize) {
-      groups.push(group);
-    } else {
-      // Put members back if group couldn't reach minSize
-      remaining.push(...group);
-      break;
-    }
+    groups.push(group);
   }
 
-  // Assign any leftovers to the best-scoring existing group
+  // Safety: assign any unexpected leftovers (shouldn't happen with correct sizing)
   if (remaining.length > 0 && groups.length > 0) {
     assignLeftovers(groups, remaining, maxSize);
   }

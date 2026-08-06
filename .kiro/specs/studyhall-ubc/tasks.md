@@ -70,7 +70,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Display error for non-UBC emails before sending
     - _Requirements: 1.1, 1.2_
 
-  - [ ]* 3.2 Write property test for email validation
+  - [x]* 3.2 Write property test for email validation
     - **Property 1: Email domain validation**
     - **Validates: Requirements 1.1, 1.2**
 
@@ -97,7 +97,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - For visitors, show all subjects without auth gate
     - _Requirements: 3.1, 3.2, 3.3_
 
-  - [ ]* 5.2 Write property test for subject pinning logic
+  - [x]* 5.2 Write property test for subject pinning logic
     - **Property 13: Subject pinning for enrolled students**
     - **Validates: Requirements 3.3**
 
@@ -115,7 +115,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Implement retry-once logic on Zod validation failure
     - _Requirements: 4.2, 4.4, 10.2, 10.3_
 
-  - [ ]* 6.2 Write property test for topic extraction schema validation
+  - [x]* 6.2 Write property test for topic extraction schema validation
     - **Property 11: AI response schema validation**
     - **Validates: Requirements 4.2, 10.3**
 
@@ -134,7 +134,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Export as pure function for unit testing
     - _Requirements: 5.2, 5.3_
 
-  - [ ]* 7.2 Write property tests for complementarity scoring
+  - [x]* 7.2 Write property tests for complementarity scoring
     - **Property 4: Complementarity score correctness**
     - **Property 5: Pace penalty monotonicity**
     - **Validates: Requirements 5.2, 5.3**
@@ -146,7 +146,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Handle edge case: < 4 students returns empty
     - _Requirements: 5.1, 5.4, 5.5, 5.7_
 
-  - [ ]* 7.4 Write property tests for group formation
+  - [x]* 7.4 Write property tests for group formation
     - **Property 2: Group member conservation**
     - **Property 3: Group size bounds**
     - **Validates: Requirements 5.1, 5.4, 5.5, 5.7**
@@ -174,7 +174,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Validate output: exactly 6 sessions, weekdays only, 09:00-20:00, 90-min duration
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-  - [ ]* 9.2 Write property tests for timeline validation
+  - [x]* 9.2 Write property tests for timeline validation
     - **Property 6: Timeline validity**
     - **Property 7: Timeline topic ordering**
     - **Validates: Requirements 6.1, 6.2, 6.3, 6.4**
@@ -185,7 +185,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Write sessions to database with room_id and checkin_code
     - _Requirements: 6.5, 6.6_
 
-  - [ ]* 9.4 Write property tests for room assignment and check-in codes
+  - [x]* 9.4 Write property tests for room assignment and check-in codes
     - **Property 8: Room round-robin distribution**
     - **Property 9: Check-in code format and uniqueness**
     - **Validates: Requirements 6.5, 6.6**
@@ -198,7 +198,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Enforce uniqueness constraint on (session_id, user_id)
     - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-  - [ ]* 10.2 Write property test for check-in code verification
+  - [x]* 10.2 Write property test for check-in code verification
     - **Property 10: Wrong check-in code rejection**
     - **Validates: Requirements 7.3**
 
@@ -244,7 +244,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Verify running seed twice is idempotent
     - _Requirements: 11.1, 11.2, 11.3_
 
-  - [ ]* 12.5 Write property test for seed idempotence
+  - [x]* 12.5 Write property test for seed idempotence
     - **Property 12: Seed idempotence**
     - **Validates: Requirements 11.3**
 

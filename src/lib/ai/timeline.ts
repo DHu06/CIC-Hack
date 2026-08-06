@@ -39,7 +39,7 @@ const SYSTEM_PROMPT =
  * Aggregates topic profiles across group members.
  * Returns topics sorted from weakest (lowest avg confidence) to strongest.
  */
-function aggregateTopicProfiles(
+export function aggregateTopicProfiles(
   profiles: TopicProfileInput[]
 ): Array<{ topic: string; avgConfidence: number; memberCount: number }> {
   const topicMap = new Map<string, { totalConfidence: number; count: number }>();
@@ -70,7 +70,7 @@ function aggregateTopicProfiles(
 /**
  * Validates that a date string represents a weekday (Mon-Fri).
  */
-function isWeekday(dateStr: string): boolean {
+export function isWeekday(dateStr: string): boolean {
   const date = new Date(dateStr + "T12:00:00");
   const day = date.getDay();
   return day >= 1 && day <= 5;
@@ -79,7 +79,7 @@ function isWeekday(dateStr: string): boolean {
 /**
  * Validates that a time string is within bounds (start >= 09:00, end <= 21:30).
  */
-function isTimeInBounds(startTime: string, endTime: string): boolean {
+export function isTimeInBounds(startTime: string, endTime: string): boolean {
   const [startH, startM] = startTime.split(":").map(Number);
   const [endH, endM] = endTime.split(":").map(Number);
 
@@ -97,7 +97,7 @@ function isTimeInBounds(startTime: string, endTime: string): boolean {
 /**
  * Validates that duration is exactly 90 minutes.
  */
-function isDuration90Minutes(startTime: string, endTime: string): boolean {
+export function isDuration90Minutes(startTime: string, endTime: string): boolean {
   const [startH, startM] = startTime.split(":").map(Number);
   const [endH, endM] = endTime.split(":").map(Number);
 
@@ -111,7 +111,7 @@ function isDuration90Minutes(startTime: string, endTime: string): boolean {
  * Post-validation: ensures all business rules are met.
  * Throws an error if any constraint is violated.
  */
-function postValidateTimeline(result: TimelineResult): void {
+export function postValidateTimeline(result: TimelineResult): void {
   if (result.sessions.length !== 6) {
     throw new Error(`Expected exactly 6 sessions, got ${result.sessions.length}`);
   }

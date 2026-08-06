@@ -127,3 +127,122 @@ describe("assignRoomsRoundRobin", () => {
     expect(max - min).toBeLessThanOrEqual(1);
   });
 });
+
+import fc from "fast-check";
+
+// --- Arbitraries ---
+const dateArb = fc.integer({ min: 1, max: 365 }).map(dayOfYear => {
+  const d = new Date(2025, 0, dayOfYear);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+});
+
+const sessionPlanArb = fc.record({
+  date: dateArb,
+  start_time: fc.constantFrom("09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"),
+  end_time: fc.constantFrom("10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30"),
+  topic: fc.string({ minLength: 2, maxLength: 30 }),
+  goal: fc.string({ minLength: 5, maxLength: 50 }),
+});
+
+const roomArb = fc.record({
+  id: fc.uuid(),
+  name: fc.string({ minLength: 3, maxLength: 20 }),
+});
+
+// --- Property 8: Room round-robin distribution ---
+// **Validates: Requirements 6.5**
+describe("Property 8: Room round-robin distribution", () => {
+  it("assigns rooms in strict round-robin order: session[i] gets rooms[i % M]", () => {
+    fc.assert(
+      fc.property(
+        fc.array(sessionPlanArb, { minLength: 1, maxLength: 30 }),
+        fc.array(roomArb, { minLength: 1, maxLength: 10 }),
+        (sessions, rooms) => {
+          const result = assignRoomsRoundRobin(sessions, rooms);
+
+          for (let i = 0; i < sessions.length; i++) {
+            expect(result[i].roomId).toBe(rooms[i % rooms.length].id);
+          }
+        }
+      ),
+      { numRuns: 200 }
+    );
+  });
+
+  it("distributes rooms fairly: max count - min count <= 1", () => {
+    fc.assert(
+      fc.property(
+        fc.array(sessionPlanArb, { minLength: 1, maxLength: 30 }),
+        fc.array(roomArb, { minLength: 1, maxLength: 10 }),
+        (sessions, rooms) => {
+          const result = assignRoomsRoundRobin(sessions, rooms);
+
+          // Count assignments per room
+          const roomCounts: Record<string, number> = {};
+          for (const r of result) {
+            roomCounts[r.roomId] = (roomCounts[r.roomId] || 0) + 1;
+          }
+
+          const counts = Object.values(roomCounts);
+          const maxCount = Math.max(...counts);
+          const minCount = Math.min(...counts);
+          expect(maxCount - minCount).toBeLessThanOrEqual(1);
+        }
+      ),
+      { numRuns: 200 }
+    );
+  });
+});
+
+// --- Property 9: Check-in code format and uniqueness ---
+// **Validates: Requirements 6.6**
+describe("Property 9: Check-in code format and uniqueness", () => {
+  it("generateCheckinCode always returns a 4-digit string between 1000 and 9999", () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 0, max: 1000 }), // dummy input to drive repetitions
+        () => {
+          const code = generateCheckinCode();
+          expect(code).toMatch(/^\d{4}$/);
+          const num = Number(code);
+          expect(num).toBeGreaterThanOrEqual(1000);
+          expect(num).toBeLessThanOrEqual(9999);
+        }
+      ),
+      { numRuns: 500 }
+    );
+  });
+
+  it("generateUniqueCheckinCodes(n) returns n distinct codes for n <= 100", () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 1, max: 100 }),
+        (n) => {
+          const codes = generateUniqueCheckinCodes(n);
+          expect(codes).toHaveLength(n);
+          const uniqueSet = new Set(codes);
+          expect(uniqueSet.size).toBe(n);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  it("every code in a batch matches /^\\d{4}$/", () => {
+    fc.assert(
+      fc.property(
+        fc.integer({ min: 1, max: 100 }),
+        (n) => {
+          const codes = generateUniqueCheckinCodes(n);
+          for (const code of codes) {
+            expect(code).toMatch(/^\d{4}$/);
+          }
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
