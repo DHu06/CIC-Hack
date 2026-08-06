@@ -114,15 +114,6 @@ Push to `main` and Amplify auto-deploys. First deploy takes ~3-5 minutes.
 │  └──────┬──────┘     └──────────────┘                  │
 │         │                                                │
 └─────────┼────────────────────────────────────────────────┘
-          │
-          ▼ (external services)
-┌──────────────────┐    ┌──────────────────┐
-│    Supabase      │    │   Anthropic AI   │
-│  (Postgres +     │    │  (claude-sonnet) │
-│   Auth + RT)     │    │                  │
-└──────────────────┘    └──────────────────┘
-```
-
 ## Cost Estimate (Hackathon/Demo)
 
 - **Amplify Hosting**: Free tier covers 1000 build minutes/month + 15 GB served/month
