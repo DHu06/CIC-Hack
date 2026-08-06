@@ -203,6 +203,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242419
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045061960
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045430202
       }
     ],
     "5.3 Create subject detail page": [
@@ -215,6 +225,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242446
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045062753
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045431245
       }
     ],
     "6.1 Implement AI topic extraction pipeline": [
@@ -332,6 +352,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242583
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045063534
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045431866
       }
     ],
     "8. Checkpoint - Matching algorithm verified": [
@@ -344,6 +374,11 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242603
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045438427
       }
     ],
     "9.1 Implement timeline generation pipeline": [
@@ -444,6 +479,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242708
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045064321
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045432665
       }
     ],
     "11. Checkpoint - Core features complete": [
@@ -456,6 +501,11 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242727
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045439308
       }
     ],
     "12.1 Create landing page and navigation": [
@@ -468,6 +518,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242748
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045065166
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045433494
       }
     ],
     "12.2 Add loading states, empty states, and error handling": [
@@ -480,6 +540,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242768
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045440380
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045797033
       }
     ],
     "12.3 Mobile responsive polish": [
@@ -492,6 +562,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242787
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045441274
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045797806
       }
     ],
     "12.4 Run seed through AI pipeline and verify end-to-end": [
@@ -504,6 +584,16 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242807
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045442583
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045796166
       }
     ],
     "13. Final checkpoint - Definition of done": [
@@ -516,6 +606,11 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044242827
+      },
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045798890
       }
     ],
     "1. Project scaffold, Tailwind, shadcn, Supabase client wiring, env var loading": [
@@ -551,6 +646,34 @@
         "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786044832520
+      }
+    ],
+    "5. Subject index + subject detail pages reading seeded data": [
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045431271
+      }
+    ],
+    "7. Group matching algorithm + group page": [
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045431892
+      }
+    ],
+    "10. RSVP + realtime attendee counts + 4-digit check-in": [
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045432689
+      }
+    ],
+    "12. Polish pass: loading states, empty states, error toasts, mobile layout": [
+      {
+        "executionId": "520f311a-33f9-4725-9c9a-6b8a6eea8a79",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786045797839
       }
     ]
   }

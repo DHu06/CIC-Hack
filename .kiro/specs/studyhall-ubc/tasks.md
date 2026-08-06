@@ -89,8 +89,8 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
 - [x] 4. Checkpoint - Auth and database foundation
   - Ensure `npm run build` passes, database migrations apply cleanly, auth flow works end-to-end. Ask the user if questions arise.
 
-- [ ] 5. Subject index + subject detail pages reading seeded data
-  - [~] 5.1 Create subjects index page
+- [x] 5. Subject index + subject detail pages reading seeded data
+  - [x] 5.1 Create subjects index page
     - Create `/subjects` page as React Server Component
     - Display grid of subject cards with name, colour accent, session counts, attendee counts
     - For authenticated users, pin enrolled subjects to top
@@ -101,7 +101,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - **Property 13: Subject pinning for enrolled students**
     - **Validates: Requirements 3.3**
 
-  - [~] 5.3 Create subject detail page
+  - [x] 5.3 Create subject detail page
     - Create `/subjects/[code]` page showing today's sessions, 7-day session strip, room information
     - Display status pills, session times, topics
     - Hide attendee names for unauthenticated visitors
@@ -126,7 +126,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Show error toast on failure, preserve uploaded note
     - _Requirements: 4.1, 4.3, 4.5, 4.6_
 
-- [ ] 7. Group matching algorithm + group page
+- [x] 7. Group matching algorithm + group page
   - [x] 7.1 Implement complementarity scoring function
     - Create pure function `computeComplementarityScore(group: TopicVector[]): number` in `lib/ai/match.ts`
     - Implement topic spread calculation: sum of (max - min) per shared topic
@@ -157,13 +157,13 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Write study_groups and group_members to database
     - _Requirements: 5.6_
 
-  - [~] 7.6 Create group page
+  - [x] 7.6 Create group page
     - Create `/groups/[id]` page showing members, their strengths/weaknesses, group rationale, timeline
     - Display each member's topic profile with visual confidence indicators
     - Show AI-generated group name and rationale
     - _Requirements: 5.6_
 
-- [~] 8. Checkpoint - Matching algorithm verified
+- [x] 8. Checkpoint - Matching algorithm verified
   - Ensure all tests pass including complementarity scoring tests. Run `npm test`. Ask the user if questions arise.
 
 - [x] 9. AI timeline generation producing dated sessions with rooms
@@ -190,7 +190,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - **Property 9: Check-in code format and uniqueness**
     - **Validates: Requirements 6.5, 6.6**
 
-- [ ] 10. RSVP + realtime attendee counts + 4-digit check-in
+- [x] 10. RSVP + realtime attendee counts + 4-digit check-in
   - [x] 10.1 Implement RSVP and check-in server actions
     - Create server action `rsvpSession(sessionId)` that creates attendance record with status='rsvp'
     - Create server action `checkIn(sessionId, code)` that verifies code and updates to 'checked_in'
@@ -210,35 +210,35 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - Handle reconnection: refetch state on reconnect
     - _Requirements: 7.5, 7.6, 8.1, 8.2, 8.3_
 
-  - [~] 10.4 Create session detail page
+  - [x] 10.4 Create session detail page
     - Create `/sessions/[id]` page with room info, map link, attendee list, RSVP button, check-in code input
     - Wire up realtime hook for live attendee count
     - Show RSVP and checked-in counts updating without refresh
     - _Requirements: 7.5, 7.6, 8.3_
 
-- [~] 11. Checkpoint - Core features complete
+- [x] 11. Checkpoint - Core features complete
   - Ensure all tests pass, realtime works across two browser tabs, RSVP updates immediately. Ask the user if questions arise.
 
-- [ ] 12. Polish pass: loading states, empty states, error toasts, mobile layout
-  - [~] 12.1 Create landing page and navigation
+- [x] 12. Polish pass: loading states, empty states, error toasts, mobile layout
+  - [x] 12.1 Create landing page and navigation
     - Create `/` landing page with pitch copy, live sessions strip (today's sessions), sign-in CTA
     - Create `/me` page showing user's upcoming sessions
     - Build responsive navigation with mobile menu
     - _Requirements: 12.3_
 
-  - [~] 12.2 Add loading states, empty states, and error handling
+  - [x] 12.2 Add loading states, empty states, and error handling
     - Add loading.tsx files for Suspense boundaries on all route segments
     - Add empty state components for: no subjects, no sessions, no groups, no notes
     - Wire error toasts using shadcn/ui Toast component on all server action failures
     - _Requirements: 12.4_
 
-  - [~] 12.3 Mobile responsive polish
+  - [x] 12.3 Mobile responsive polish
     - Ensure all pages render correctly at 390px viewport width
     - Test subject grid, session cards, group pages, forms at mobile breakpoint
     - Adjust spacing, font sizes, card layouts for mobile
     - _Requirements: 12.3_
 
-  - [~] 12.4 Run seed through AI pipeline and verify end-to-end
+  - [x] 12.4 Run seed through AI pipeline and verify end-to-end
     - Update seed script to run real AI pipeline over seed users (extractTopics for notes, matchGroups, generateTimeline)
     - Verify `npm run seed` completes successfully on fresh DB
     - Verify running seed twice is idempotent
@@ -248,7 +248,7 @@ Build StudyHall UBC following the specified 9-step build order. Each step produc
     - **Property 12: Seed idempotence**
     - **Validates: Requirements 11.3**
 
-- [~] 13. Final checkpoint - Definition of done
+- [x] 13. Final checkpoint - Definition of done
   - Verify all definition-of-done criteria: `npm run build` zero errors, `npm run seed` clean twice, `npm test` passes, @gmail.com rejected by trigger, note upload produces topic chips in 10s, matched group has 4-6 members with differing weak topics, timeline has 6 weekday sessions, RSVP updates in second browser, every page renders at 390px, no secrets in client bundle. Create README.md and DECISIONS.md. Ask the user if questions arise.
 
 ## Notes
