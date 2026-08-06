@@ -33,7 +33,7 @@ export default function AuthPage() {
     }
 
     if (!validateUBCEmail(trimmedEmail)) {
-      setEmailError("Only @student.ubc.ca email addresses are allowed.");
+      setEmailError("Please enter a valid email address.");
       return;
     }
 
@@ -120,7 +120,7 @@ export default function AuthPage() {
           </h1>
           <p className="text-sm text-muted-foreground">
             {step === "email"
-              ? "Enter your UBC student email to get started."
+              ? "Enter your email to get started."
               : `We sent a 6-digit code to ${email.trim()}`}
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function AuthPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@student.ubc.ca"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);

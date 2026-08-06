@@ -1,10 +1,8 @@
 /**
- * Validates that an email address belongs to the UBC student domain.
- *
- * @param email - The email address to validate
- * @returns true if the email ends with @student.ubc.ca (case-insensitive)
+ * Validates that an email is acceptable for sign-in.
+ * NOTE: Email domain restriction disabled for demo/testing.
+ * In production, this would check for @student.ubc.ca
  */
 export function validateUBCEmail(email: string): boolean {
-  if (!email) return false;
-  return email.toLowerCase().endsWith("@student.ubc.ca");
+  return email.length > 0 && email.includes("@");
 }
