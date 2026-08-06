@@ -113,6 +113,16 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786042603215
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043272405
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043992904
       }
     ],
     "3.1 Implement email validation utility and auth page": [
@@ -125,6 +135,16 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786042604054
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043273738
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043992069
       }
     ],
     "3.3 Implement onboarding flow": [
@@ -132,6 +152,16 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287767
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043997445
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044212352
       }
     ],
     "3.4 Implement auth helpers and session management": [
@@ -139,6 +169,16 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287786
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043998255
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044212886
       }
     ],
     "4. Checkpoint - Auth and database foundation": [
@@ -146,6 +186,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287802
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044237848
       }
     ],
     "5.1 Create subjects index page": [
@@ -153,6 +198,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287818
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242419
       }
     ],
     "5.3 Create subject detail page": [
@@ -160,6 +210,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287838
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242446
       }
     ],
     "6.1 Implement AI topic extraction pipeline": [
@@ -167,6 +222,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287859
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242475
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044248585
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044474585
       }
     ],
     "6.3 Create notes upload page and server action": [
@@ -174,6 +244,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287876
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242504
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044647870
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044832488
       }
     ],
     "7.1 Implement complementarity scoring function": [
@@ -181,6 +266,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287892
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242524
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044249401
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044475634
       }
     ],
     "7.3 Implement greedy group formation algorithm": [
@@ -188,6 +288,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287910
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242543
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044250279
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044476433
       }
     ],
     "7.5 Implement group matching orchestrator with AI naming": [
@@ -195,6 +310,16 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287926
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242563
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044484352
       }
     ],
     "7.6 Create group page": [
@@ -202,6 +327,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287943
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242583
       }
     ],
     "8. Checkpoint - Matching algorithm verified": [
@@ -209,6 +339,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287961
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242603
       }
     ],
     "9.1 Implement timeline generation pipeline": [
@@ -216,6 +351,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287981
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242626
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044250958
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044477204
       }
     ],
     "9.3 Implement room assignment and check-in code generation": [
@@ -223,6 +373,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041287997
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242649
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044485042
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044642023
       }
     ],
     "10.1 Implement RSVP and check-in server actions": [
@@ -230,6 +395,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288013
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242668
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044251854
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044478253
       }
     ],
     "10.3 Implement realtime attendance hook": [
@@ -237,6 +417,21 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288029
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242687
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044485818
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044641108
       }
     ],
     "10.4 Create session detail page": [
@@ -244,6 +439,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288046
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242708
       }
     ],
     "11. Checkpoint - Core features complete": [
@@ -251,6 +451,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288063
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242727
       }
     ],
     "12.1 Create landing page and navigation": [
@@ -258,6 +463,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288080
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242748
       }
     ],
     "12.2 Add loading states, empty states, and error handling": [
@@ -265,6 +475,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288098
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242768
       }
     ],
     "12.3 Mobile responsive polish": [
@@ -272,6 +487,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288114
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242787
       }
     ],
     "12.4 Run seed through AI pipeline and verify end-to-end": [
@@ -279,6 +499,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288131
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242807
       }
     ],
     "13. Final checkpoint - Definition of done": [
@@ -286,6 +511,11 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786041288149
+      },
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044242827
       }
     ],
     "1. Project scaffold, Tailwind, shadcn, Supabase client wiring, env var loading": [
@@ -293,6 +523,34 @@
         "executionId": "1da081aa-7bdf-406c-a006-5dc4d5a6f357",
         "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
         "timestamp": 1786042342975
+      }
+    ],
+    "2. Database schema + migrations + seed script": [
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786043992929
+      }
+    ],
+    "3. Email OTP auth restricted to @student.ubc.ca, profile setup flow": [
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044212918
+      }
+    ],
+    "9. AI timeline generation producing dated sessions with rooms": [
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044642050
+      }
+    ],
+    "6. Notes upload + AI topic extraction": [
+      {
+        "executionId": "811aed08-dc84-49ad-8503-d0db078073b5",
+        "chatSessionId": "sess_79569c24-c741-4d16-82ed-6fd565691b81",
+        "timestamp": 1786044832520
       }
     ]
   }

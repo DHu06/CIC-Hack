@@ -3,10 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * Refreshes the user's session on every request by reading and writing
- * auth cookies. This ensures the access token stays fresh and prevents
- * unexpected logouts.
+ * auth cookies. Also redirects authenticated-but-not-onboarded users
+ * to /onboarding.
  */
-export async function updateSession(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -35,13 +35,35 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: Do not add code between createServerClient and auth.getUser().
   // A simple mistake could make it very hard to debug random logouts.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const pathname = request.nextUrl.pathname;
+
+  // Routes that don't require onboarding check
+  const publicPaths = ["/auth", "/onboarding"];
+  const isPublicPath = publicPaths.some(
+    (p) => pathname === p || pathname.startsWith(p + "/")
+  );
+
+  // If user is authenticated and not on a public path, check onboarding
+  if (user && !isPublicPath) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarded")
+      .eq("id", user.id)
+      .single();
+
+    // If no profile or not onboarded, redirect to onboarding
+    if (!profile || !profile.onboarded) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/onboarding";
+      return NextResponse.redirect(url);
+    }
+  }
 
   return supabaseResponse;
-}
-
-export async function middleware(request: NextRequest) {
-  return await updateSession(request);
 }
 
 export const config = {
